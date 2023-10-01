@@ -10,6 +10,7 @@ let playerFrogMan = {
         y: 0
     },
     gravity: 0.2,
+    isGrounded: false,
     width: 100,
     height: 100
 }

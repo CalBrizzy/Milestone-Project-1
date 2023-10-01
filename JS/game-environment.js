@@ -15,19 +15,19 @@ function update() {
     createPlayer()
     playerFrogMan.position.y += playerFrogMan.velocity.y // pulls player down
 
-    if (playerFrogMan.position.y + playerFrogMan.height + 68 <= canvas.height) { // if bottom of the image does not hit bottom of canvas add gravity
+    if (playerFrogMan.position.y + playerFrogMan.height + 70 <= canvas.height) { // if bottom of the image does not hit bottom of canvas add gravity
         playerFrogMan.velocity.y += playerFrogMan.gravity // gravity simulation
     }
     else {
         playerFrogMan.velocity.y = 0 // if hit bottom of canvas don't pull player down
-    }
+        playerFrogMan.isGrounded = true
+    } 
 }
 
 function animate() {
     requestAnimationFrame(animate) // method for animation loop built-in for canvas
     context.clearRect(0, 0, canvas.width, canvas.height) // clear canvas for every last animation frame
     update()
-    console.log('go')
 }
 
 animate()
