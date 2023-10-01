@@ -1,14 +1,7 @@
-main {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
-    height: 99vh;
-    width: 99vw;
+canvas {
+    background-color: aqua;
 }
 
-#game-environment {
-    background-color: aqua;
-    height: 1000px;
-    width: 2000px;
+body {
+    margin: 0px;
 }
