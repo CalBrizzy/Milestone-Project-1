@@ -1,11 +1,12 @@
+// Jump
 function jump() {
-        document.addEventListener('keydown', function(event) {
-            if (event.keyCode === 32 && playerFrogMan.isGrounded === true) {
-                playerFrogMan.velocity.y -= 20
-                playerFrogMan.isGrounded = false
-                console.log('jumping')
-            }
-        })
+    document.addEventListener('keydown', function (event) {
+        if (event.keyCode === 32 && playerFrogMan.isGrounded === true) {
+            playerFrogMan.velocity.y -= playerFrogMan.jumpStrength
+            playerFrogMan.isGrounded = false
+        }
+    })
 }
 
-jump ()
+jump()
+

@@ -1,8 +1,8 @@
 //Player Object
 let playerFrogMan = {
-    playerImage: 'assets/images/FrogMan-Idle.gif',
+    playerImage: 'assets/images/player/FrogMan-Idle.gif',
     position : {
-        x: 100,
+        x: 1000,
         y: 100
     },
     velocity : {
@@ -10,6 +10,7 @@ let playerFrogMan = {
         y: 0
     },
     gravity: 0.2,
+    jumpStrength: 13,
     isGrounded: false,
     width: 100,
     height: 100
