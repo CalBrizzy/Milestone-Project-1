@@ -1,7 +1,24 @@
-canvas {
-    background-color: aqua;
-}
-
 body {
     margin: 0px;
+}
+
+#wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+#game-window {
+    display: flex;
+    flex-wrap: wrap;
+    height: 800px;
+    width: 1600px;
+    border-style: solid;
+}
+
+canvas {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: aqua;
 }
