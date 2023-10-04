@@ -1,5 +1,6 @@
 class Player {
     constructor(x, y, src) {
+        this.img = new Image()
         this.playerImg = src
         this.position = {
             x: x,
@@ -10,7 +11,7 @@ class Player {
             y: 0
         }
         this.isAlive = true
-        this.score = -4
+        this.score = 0
         this.gravity = 0.1
         this.jumpStrenth = 9
         this.isGrounded = false
@@ -39,29 +40,35 @@ class Player {
     }
 }
 
-function playerHit(mainPlayer) {
+function playerHitOrScore(mainPlayer) {
     boxes.forEach((box) => {
-        if (mainPlayer.position.x + mainPlayer.width <= box.position.x && box.hit === false && mainPlayer.position.y + mainPlayer.height >= box.position.y) {
+        const collidesHorizontally = mainPlayer.position.x + mainPlayer.width > box.position.x && mainPlayer.position.x < box.position.x + box.width
+        const collidesVertically = mainPlayer.position.y + mainPlayer.height > box.position.y && mainPlayer.position.y < box.position.y + box.height
+
+        if (collidesHorizontally && collidesVertically && box.hit === false) {
+            box.hit = true
+            console.log('I am hit!', box.hit)
+
+            mainPlayer.isAlive = false
+        } else if (!collidesHorizontally && mainPlayer.position.x > box.position.x && box.hit === false) { // Player successfully passed the box without collision
             box.hit = true
             mainPlayer.score += 1
-            console.log('I am hit!', box.hit)
-            console.log(mainPlayer.score)
+            console.log('Box successfully passed!')
         }
-    })
+    });
 }
 
 function playerImage(mainPlayer) { // creates image of player
-    let img = new Image()
-    img.src = mainPlayer.playerImg
-    ctx.drawImage(img, mainPlayer.position.x, mainPlayer.position.y)
+    mainPlayer.img.src = mainPlayer.playerImg
+    ctx.drawImage(mainPlayer.img, mainPlayer.position.x, mainPlayer.position.y)
 }
 
 function createPlayer(newPlayer) { //one function to pass for player group
     playerImage(newPlayer)
     newPlayer.playerGravity()
-    newPlayer.jump()
-    playerHit(newPlayer)
+    playerHitOrScore(newPlayer)
 }
 
 let player1 = new Player(100, 100, 'assets/images/player/FrogMan-Idle.gif')
+player1.jump()
 

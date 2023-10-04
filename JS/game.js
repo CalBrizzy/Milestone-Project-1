@@ -10,7 +10,7 @@ function update() {
     createPlayer(player1)
     createGround(grounds)
     createBox(boxes)
-    playerScore()
+    playerScore(player1)
 }
 
 function animate() {

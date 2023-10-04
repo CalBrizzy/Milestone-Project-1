@@ -1,4 +1,4 @@
-function playerScore() {
+function playerScore(mainPlayer) {
     ctx.font = '30px Arial'
-    ctx.fillText(player1.score, canvas.height, 150)
+    ctx.fillText(mainPlayer.score, canvas.height, 150)
 }
