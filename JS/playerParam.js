@@ -9,8 +9,10 @@ class Player {
             x: 0,
             y: 0
         }
+        this.isAlive = true
+        this.score = -4
         this.gravity = 0.1
-        this.jumpStrenth = 200
+        this.jumpStrenth = 8
         this.isGrounded = false
         this.width = 100
         this.height = 100
@@ -30,11 +32,22 @@ class Player {
     jump() {
         document.addEventListener('keydown', (event) => {
             if (event.keyCode === 32 && this.isGrounded === true) {
-                this.position.y -= this.jumpStrenth // adds up speed for player y position
+                this.velocity.y -= this.jumpStrenth // adds up speed for player y position
                 this.isGrounded = false
             }
         })
     }
+}
+
+function playerHit(mainPlayer) {
+    boxes.forEach((box) => {
+        if (mainPlayer.position.x + mainPlayer.width <= box.position.x && box.hit === false && mainPlayer.position.y + mainPlayer.height >= box.position.y) {
+            box.hit = true
+            mainPlayer.score += 1
+            console.log('I am hit!', box.hit)
+            console.log(mainPlayer.score)
+        }
+    })
 }
 
 function playerImage(mainPlayer) { // creates image of player
@@ -47,7 +60,8 @@ function createPlayer(newPlayer) { //one function to pass for player group
     playerImage(newPlayer)
     newPlayer.playerGravity()
     newPlayer.jump()
+    playerHit(newPlayer)
 }
 
-
 let player1 = new Player(100, 100, 'assets/images/player/FrogMan-Idle.gif')
+

@@ -13,19 +13,20 @@ class Ground {
 
 let grounds = [new Ground(0, 735), new Ground(3500, 735), new Ground(7000, 735)]
 
+const groundTop = grounds.position.y
 
 function moveGround(groundImg) { //Endless running ground
     groundImg.forEach((ground) => {
         ground.position.x -= gameSpeed
     })
 
-    if (grounds[0].position.x + grounds[0].width <= 0) {
+    if (grounds[0].position.x + grounds[0].width <= 0) { // When the end width of the ground image reaches 0 pixels position it at the back of grounds[2]
         grounds[0].position.x = grounds[2].position.x + grounds[2].width
     }
-    if (grounds[1].position.x + grounds[1].width <= 0) {
+    if (grounds[1].position.x + grounds[1].width <= 0) {// When the end width of the ground image reaches 0 pixels position it at the back of grounds[0]
         grounds[1].position.x = grounds[0].position.x + grounds[0].width
     }
-    if (grounds[2].position.x + grounds[2].width <= 0) {
+    if (grounds[2].position.x + grounds[2].width <= 0) {// When the end width of the ground image reaches 0 pixels position it at the back of grounds[1]
         grounds[2].position.x = grounds[1].position.x + grounds[1].width
     }
 }
