@@ -12,7 +12,7 @@ class Player {
         this.isAlive = true
         this.score = -4
         this.gravity = 0.1
-        this.jumpStrenth = 8
+        this.jumpStrenth = 9
         this.isGrounded = false
         this.width = 100
         this.height = 100
