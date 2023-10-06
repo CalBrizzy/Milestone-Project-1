@@ -12,7 +12,7 @@ class Box {
     }
 }
 
-let boxes = [new Box(2000, 635), new Box(4000, 635), new Box(6000, 635), new Box(7000, 635)]
+let boxes = [new Box(2000, 635), new Box(4000, 635), new Box(6000, 635), new Box(8000, 635)]
 
 function boxMoveAndSpawn(boxImg) {
 
@@ -22,6 +22,8 @@ function boxMoveAndSpawn(boxImg) {
     
             if (player1.isAlive === false) {
                 box.boxSpeed = 0
+            } else {
+                box.boxSpeed = 2
             }
         }
 
@@ -51,6 +53,21 @@ function boxImage(boxImg) { // creates image of box
     boxImg.forEach((box) => {
         img.src = box.boxImg
         ctx.drawImage(img, box.position.x, box.position.y, box.width, box.height)
+    })
+}
+
+function boxStartingPos(boxImg) {
+    boxImg[0].position.x = 2000
+    boxImg[0].position.y = 635
+    boxImg[1].position.x = 4000
+    boxImg[1].position.y = 635
+    boxImg[2].position.x = 6000
+    boxImg[2].position.y = 635
+    boxImg[3].position.x = 8000
+    boxImg[3].position.y = 635
+
+    boxImg.forEach((box) => {
+        box.hit = false
     })
 }
 
