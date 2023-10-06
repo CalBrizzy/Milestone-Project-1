@@ -2,6 +2,17 @@ body {
     margin: 0px;
 }
 
+@keyframes blink {
+    0%,
+    49% {
+        opacity: 0;
+    }
+    50%,
+    100% {
+        opacity: 1;
+    }
+}
+
 #wrapper {
     display: flex;
     align-items: center;
@@ -11,10 +22,37 @@ body {
 
 #game-window {
     display: flex;
-    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     height: 800px;
     width: 1600px;
     border-style: solid;
+}
+
+#start-btn {
+    position: absolute;
+    margin-top: 300px;
+    margin-left: 120px;
+    height: 50px;
+    width: 300px;
+    font-size: 40px;
+}
+
+#directions {
+    position: absolute;
+    margin-top: 650px;
+    font-size: 30px;
+}
+
+h2#start-btn {
+    animation: blink 0.8s linear infinite;
+}
+
+#game-start {
+    position: absolute;
+    font-family: 'Titan One', sans-serif;
+    font-size: 100px;
 }
 
 canvas {

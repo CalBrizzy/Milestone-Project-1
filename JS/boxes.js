@@ -5,6 +5,7 @@ class Box {
             x: x,
             y: y
         }
+        this.boxSpeed = 2
         this.hit = false
         this.width = 100
         this.height = 100
@@ -14,16 +15,35 @@ class Box {
 let boxes = [new Box(2000, 635), new Box(4000, 635), new Box(6000, 635), new Box(7000, 635)]
 
 function boxMoveAndSpawn(boxImg) {
+
+    boxImg.forEach((box) => {
+        if (gameStart === true) {
+            box.position.x -= gameSpeed + box.boxSpeed;
     
-    boxImg.forEach((box) => { 
-        box.position.x -= gameSpeed + 2
-        
-        if (box.position.x + box.width <= 0) { // when left side of box width reach 0 pixel 
-            let randomNum = Math.floor(Math.random()* (7000 - 2000)) + 2000
-            box.position.x = randomNum// spawn in different location
-            box.hit = false
+            if (player1.isAlive === false) {
+                box.boxSpeed = 0
+            }
         }
-    })
+
+        if (box.position.x + box.width <= 0) {
+            let randomNum;
+            let hasOverlap;
+            do {
+                hasOverlap = false;
+                randomNum = Math.floor(Math.random() * (7000 - 2000)) + 2000;
+
+                for (let otherBox of boxImg) {
+                    if (randomNum < otherBox.position.x + otherBox.width && randomNum + box.width > otherBox.position.x) {
+                        hasOverlap = true;
+                        break;
+                    }
+                }
+            } while (hasOverlap);
+
+            box.position.x = randomNum;
+            box.hit = false;
+        }
+    });
 }
 
 function boxImage(boxImg) { // creates image of box

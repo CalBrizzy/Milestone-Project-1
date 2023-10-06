@@ -16,9 +16,11 @@ let grounds = [new Ground(0, 735), new Ground(3500, 735), new Ground(7000, 735)]
 const groundTop = grounds.position.y
 
 function moveGround(groundImg) { //Endless running ground
-    groundImg.forEach((ground) => {
-        ground.position.x -= gameSpeed
-    })
+    if (gameStart === true) {
+        groundImg.forEach((ground) => {
+            ground.position.x -= gameSpeed
+        })
+    }
 
     if (grounds[0].position.x + grounds[0].width <= 0) { // When the end width of the ground image reaches 0 pixels position it at the back of grounds[2]
         grounds[0].position.x = grounds[2].position.x + grounds[2].width
