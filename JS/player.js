@@ -20,14 +20,14 @@ class Player {
         this.highScore = 0
         this.gravity = 0.1
         this.jumpStrenth = 9
-        this.jumpHeight = 176
+        this.jumpHeight = 230
         this.isFalling = false
         this.frames = 0
         this.animationTime = 0
         this.frameDuration = 300
         this.isGrounded = false
-        this.width = 150
-        this.height = 150
+        this.width = 100
+        this.height = 100
     }
 
     playerGravity() {
@@ -38,6 +38,7 @@ class Player {
                 this.velocity.y += this.gravity // apply gravity
                 if (this.position.y <= this.jumpHeight) {
                     this.isFalling = true
+                    console.log('height reached')
                 }
             } else {
                 this.velocity.y = 0 // stops at buttom of canvas if player hit buttom
@@ -155,7 +156,7 @@ function playerImage(mainPlayer, deltaTime) { // creates image and handles the a
             mainPlayer.img.src = mainPlayer.playerJump
             mainPlayer.animationTime += deltaTime
 
-            playerAnimation(mainPlayer, 32, 32, 400)
+            playerAnimation(mainPlayer, 32, 32, 800)
 
             if (mainPlayer.frames > 5) { // frames for the run animation
                 mainPlayer.frames = 0

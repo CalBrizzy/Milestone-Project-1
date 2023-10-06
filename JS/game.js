@@ -60,6 +60,7 @@ function gameOver() {
 }
 
 function update() {
+    createBackground()
     createPlayer(player1)
     createGround(grounds)
     createBox(boxes)

@@ -7,12 +7,12 @@ class Box {
         }
         this.boxSpeed = 2
         this.hit = false
-        this.width = 100
-        this.height = 100
+        this.width = 80
+        this.height = 80
     }
 }
 
-let boxes = [new Box(2000, 635), new Box(4000, 635), new Box(6000, 635), new Box(8000, 635)]
+let boxes = [new Box(2000, 655), new Box(4000, 655), new Box(6000, 655), new Box(8000, 655)]
 
 function boxMoveAndSpawn(boxImg) {
 
@@ -58,13 +58,13 @@ function boxImage(boxImg) { // creates image of box
 
 function boxStartingPos(boxImg) {
     boxImg[0].position.x = 2000
-    boxImg[0].position.y = 635
+    boxImg[0].position.y = 655
     boxImg[1].position.x = 4000
-    boxImg[1].position.y = 635
+    boxImg[1].position.y = 655
     boxImg[2].position.x = 6000
-    boxImg[2].position.y = 635
+    boxImg[2].position.y = 655
     boxImg[3].position.x = 8000
-    boxImg[3].position.y = 635
+    boxImg[3].position.y = 655
 
     boxImg.forEach((box) => {
         box.hit = false
