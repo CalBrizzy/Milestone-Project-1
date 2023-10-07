@@ -19,7 +19,7 @@ let gameRestartMsg = document.getElementById('restart-game')
 gameOverMsg.style.display = 'none'
 gameRestartMsg.style.display = 'none'
 
-document.addEventListener('keydown', function (event) {
+document.addEventListener('keydown', function (event) { // press enter to start game
     if (player1.isAlive === true) {
         if (event.keyCode === 13) {
             gameStart = true
@@ -31,7 +31,7 @@ document.addEventListener('keydown', function (event) {
     }
 })
 
-document.addEventListener('keydown', function (event) {
+document.addEventListener('keydown', function (event) { // game over press enter to restart game
     if (player1.isAlive === false) {
         if (event.keyCode === 13) {
             gameOverMsg.style.display = 'none'
@@ -41,6 +41,8 @@ document.addEventListener('keydown', function (event) {
             gameDirectionMsg.style.display = ''
             gameStart = false
             player1.isAlive = true
+            boxes.hit = false
+            chicken.chickenSpawn = 0
             gameRestart()
         }
     }
@@ -48,7 +50,9 @@ document.addEventListener('keydown', function (event) {
 
 function gameRestart() {
     playerStartingPos(player1)
-    boxStartingPos(boxes)
+    obstacleStartingPos(boxes)
+    fruitsStartingPos(apples)
+    player1.boxJumped = 0
 }
 
 function gameOver() {
@@ -63,7 +67,8 @@ function update() {
     createBackground()
     createPlayer(player1)
     createGround(grounds)
-    createBox(boxes)
+    createObstacle(boxes)
+    createFruits()
     gameOver()
 }
 

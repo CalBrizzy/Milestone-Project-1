@@ -21,10 +21,11 @@ class Player {
         this.gravity = 0.1
         this.jumpStrenth = 9
         this.jumpHeight = 230
+        this.boxJumped = 0
         this.isFalling = false
         this.frames = 0
         this.animationTime = 0
-        this.frameDuration = 300
+        this.frameDuration = 200
         this.isGrounded = false
         this.width = 100
         this.height = 100
@@ -75,34 +76,40 @@ function playerHitOrScore(mainPlayer) {
 
     boxes.forEach((box) => {
         const collidesHorizontally = mainPlayer.position.x + mainPlayer.width - 25 > box.position.x && mainPlayer.position.x + 25 < box.position.x + box.width // Checks if player hits the side of the box
-        const collidesVertically = mainPlayer.position.y + mainPlayer.height > box.position.y && mainPlayer.position.y < box.position.y + box.height // Checks if player hits the top side of the box
+        const collidesVertically = mainPlayer.position.y + mainPlayer.height - 10 > box.position.y && mainPlayer.position.y < box.position.y + box.height // Checks if player hits the top side of the box
 
         if (collidesHorizontally && collidesVertically && box.hit === false) { // If player is hit by box, player is dead
             box.hit = true
             mainPlayer.isAlive = false
-        } else
-            if (!collidesHorizontally && mainPlayer.position.x > box.position.x && box.hit === false) { // Player successfully passed the box without collision
-                box.hit = true
-                mainPlayer.score += 1
-            }
+            mainPlayer.velocity.y = 0
+            mainPlayer.isGrounded = true
+        } else if (!collidesHorizontally && mainPlayer.position.x > box.position.x && box.hit === false) { // Player successfully passed the box without collision
+            box.hit = true
+            mainPlayer.boxJumped++
+            chicken.chickenSpawn++
+        }
     });
 }
 
-function playerScore(mainPlayer) {
-    if (gameStart === true) {
-        ctx.font = '50px Titan One'
-        ctx.fillText(mainPlayer.score, canvas.height, 150)
-    } else {
-        mainPlayer.score = 0
-    }
+function playerCollectFruit(mainPlayer, fruitImg) {
+
+    fruitImg.forEach((fruit) => {
+        const collidesHorizontally = mainPlayer.position.x + mainPlayer.width - 25 > fruit.position.x && mainPlayer.position.x + 25 < fruit.position.x + fruit.width  // Checks if player hits the side of the fruit
+        const collidesVertically = mainPlayer.position.y + mainPlayer.height > fruit.position.y && mainPlayer.position.y < fruit.position.y + fruit.height && mainPlayer.position.y + mainPlayer.height - 25 > fruit.position.y// Checks if player hits the bottom side of the box
+
+        if (collidesHorizontally && collidesVertically && fruit.gotFruit === false) {
+            fruit.gotFruit = true
+            mainPlayer.score++
+        }
+    })
 }
 
-function playerHighScore(mainPlayer) {
-    let highScoreTxt = document.getElementById('highscore')
-    highScoreTxt.innerText = `Highscore: ${mainPlayer.highScore}`
+function obstacleHit(mainPlayer, obsImg) {
+    const collidesHorizontally = mainPlayer.position.x + mainPlayer.width - 25 > obsImg.position.x && mainPlayer.position.x + 25 < obsImg.position.x + obsImg.width // Checks if player hits the side of the box
+    const collidesVertically = mainPlayer.position.y + mainPlayer.height - 10 > obsImg.position.y && mainPlayer.position.y < obsImg.position.y + obsImg.height // Checks if player hits the top side of the box
 
-    if (mainPlayer.highScore < mainPlayer.score) {
-        mainPlayer.highScore ++
+    if (collidesHorizontally && collidesVertically) {
+        mainPlayer.isAlive = false
     }
 }
 
@@ -127,15 +134,17 @@ function playerAnimation(mainPlayer, fWidth, fHeight, fDuration) {
     }
 }
 
-function playerImage(mainPlayer, deltaTime) { // creates image and handles the animation of the player
+function playerImage(mainPlayer) { // creates image and handles the animation of the player
+    const deltaTime60FPS = 16.67
+    const deltaTime30FPS = 33.33
 
     if (mainPlayer.isAlive === true) {
         if (gameStart === false) { // If game hasn't started play idle animation
             mainPlayer.img.src = mainPlayer.playerIdle
-            mainPlayer.animationTime += deltaTime
+            mainPlayer.animationTime += deltaTime60FPS
         } else { // If game started play run animation
             mainPlayer.img.src = mainPlayer.playerRun
-            mainPlayer.animationTime += deltaTime
+            mainPlayer.animationTime += deltaTime60FPS
         }
 
         if (mainPlayer.isGrounded === true) { //If player is grounded do the idle and run animations
@@ -154,7 +163,7 @@ function playerImage(mainPlayer, deltaTime) { // creates image and handles the a
         } else if (mainPlayer.isFalling === false) {
             // checks if player is not falling. If not falling do the jump animation
             mainPlayer.img.src = mainPlayer.playerJump
-            mainPlayer.animationTime += deltaTime
+            mainPlayer.animationTime += deltaTime60FPS
 
             playerAnimation(mainPlayer, 32, 32, 800)
 
@@ -168,7 +177,7 @@ function playerImage(mainPlayer, deltaTime) { // creates image and handles the a
         }
     } else { // Hit animation
         mainPlayer.img.src = mainPlayer.playerHit
-        mainPlayer.animationTime += deltaTime
+        mainPlayer.animationTime += deltaTime30FPS
 
         playerAnimation(mainPlayer, 32, 32, 500)
 
@@ -184,11 +193,15 @@ function playerStartingPos(mainPlayer) {
 }
 
 function createPlayer(newPlayer) { //one function to pass for player
-    playerImage(newPlayer, 33.33) // creates the player with the deltaTime parameter for the animation loop of the player
+    playerImage(newPlayer) // creates the player with the deltaTime parameter for the animation loop of the player
     newPlayer.playerGravity()
     playerHitOrScore(newPlayer)
     playerHighScore(newPlayer)
     playerScore(newPlayer)
+    playerCollectFruit(newPlayer, apples)
+    playerCollectFruit(newPlayer, bananas)
+    playerCollectFruit(newPlayer, strawberrys)
+    obstacleHit(newPlayer, chicken)
 }
 
 
