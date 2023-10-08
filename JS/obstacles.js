@@ -125,6 +125,7 @@ function obstacleStartingPos(obsImg) {
     obsImg[1].position.y = 655
 
     chicken.position.x = 2500
+    bird.position.x = 2000
     chicken.spawn = 0
 
     obsImg.forEach((obs) => {
