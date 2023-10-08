@@ -11,28 +11,39 @@ class Obstacle {
         this.frameDuration = 300
         this.width = 80
         this.height = 80
-        this.chickenSpawn = 0
+        this.spawn = 0
     }
 }
 const boxAsset = 'assets/images/environment/obstacles/box.png'
 const chickenImg = 'assets/images/environment/obstacles/Chicken-Run.png'
 const birdImmg = 'assets/images/environment/obstacles/Bird-Flying.png'
+const tSpikesOut = 'assets/images/environment/obstacles/turtle-spikes-out.png'
+const fatBirdImg = 'assets/images/environment/obstacles/FatBird-Fly.png'
+const birdImg = 'assets/images/environment/obstacles/Bird-Flying.png'
+
 
 let boxes = [new Obstacle(2000, 655), new Obstacle(4000, 655)]
+let turtles = [new Obstacle(2000, 655), new Obstacle(4000, 655)]
 let chicken = new Obstacle(2500, 655)
-let bird = new Obstacle(2500, 600)
+let bigBird = new Obstacle(2500, 550)
+let bird = new Obstacle(2000, 550)
 
 
-function obstacleAssets(obsImg, src) {
-    if (obsImg.chickenSpawn >= 3) {
-        obsImg.position.x -= gameSpeed * 6
-        playObsAnimation(obsImg, src, 13, 0, 32, 34)
+function obsSpawn(obsImg, src, spawnCount, speed, framesLength, resetFrames, framesWidth, framesHeight) {
+    if (obsImg.spawn >= spawnCount) {
+        obsImg.position.x -= gameSpeed * speed
+        playObsAnimation(obsImg, src, framesLength, resetFrames, framesWidth, framesHeight)
     }
     if (obsImg.position.x + obsImg.width <= 0) {
         obsImg.position.x = 2500
-        obsImg.chickenSpawn = 0
+        obsImg.spawn = 0
     }
+}
 
+function turtleObs() {
+    turtles.forEach((turtle) => {
+            playObsAnimation(turtle, tSpikesOut, 7, 0, 44, 26)
+    })
 }
 
 function playObsAnimation(obsImg, src, framesLength, resetFrames, fWidth, fHeight) {
@@ -114,14 +125,16 @@ function obstacleStartingPos(obsImg) {
     obsImg[1].position.y = 655
 
     chicken.position.x = 2500
+    chicken.spawn = 0
 
     obsImg.forEach((obs) => {
         obs.hit = false
     })
 }
 
-function createObstacle(obsImg) { // function to pass in update for box group
-        obstacleImage(obsImg)
-        obstacleMoveAndSpawn(obsImg)
-        obstacleAssets(chicken, chickenImg)
+function createObstacle() { // function to pass in update for box group
+        turtleObs()
+        obstacleMoveAndSpawn(turtles)
+        obsSpawn(chicken, chickenImg, 3, 6, 13, 0, 32, 34) // obsImg, src, spawnCount, speed, framesLength, resetFrames, framesWidth, framesHeight
+        obsSpawn(bird, birdImg, 1, 3, 8, 0, 32, 32)
 }

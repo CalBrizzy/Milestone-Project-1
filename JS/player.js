@@ -1,5 +1,5 @@
 class Player {
-    constructor(x, y, idle, run, jump, fall, hit, die) {
+    constructor(x, y, idle, run, jump, fall, hit, die, ghost) {
         this.img = new Image()
         this.playerIdle = idle
         this.playerRun = run
@@ -7,6 +7,8 @@ class Player {
         this.playerFall = fall
         this.playerHit = hit
         this.playerDeath = die
+        this.playerGhost = ghost
+        this.isGhost = false
         this.position = {
             x: x,
             y: y
@@ -23,6 +25,7 @@ class Player {
         this.jumpHeight = 230
         this.boxJumped = 0
         this.isFalling = false
+        this.isHit = false
         this.frames = 0
         this.animationTime = 0
         this.frameDuration = 200
@@ -39,7 +42,9 @@ class Player {
                 this.velocity.y += this.gravity // apply gravity
                 if (this.position.y <= this.jumpHeight) {
                     this.isFalling = true
-                    console.log('height reached')
+                }
+                if (gameStart === true) {
+                    jumpSoundEffect.play()
                 }
             } else {
                 this.velocity.y = 0 // stops at buttom of canvas if player hit buttom
@@ -67,26 +72,28 @@ let player1 = new Player(100, 100,
     'assets/images/player/FMan-Jump2.png', //Jump image path
     'assets/images/player/FMan-Fall.png', //Fall image path
     'assets/images/player/FMan-Hit.png',  //Hit image path
-    'assets/images/player/FMan-Die.png') // Death image path
+    'assets/images/player/FMan-Die.png', // Death image path
+    'assets/images/player/FMan-Ghost.png') // Ghost image path
 
 player1.jump()
 
 
 function playerHitOrScore(mainPlayer) {
 
-    boxes.forEach((box) => {
-        const collidesHorizontally = mainPlayer.position.x + mainPlayer.width - 25 > box.position.x && mainPlayer.position.x + 25 < box.position.x + box.width // Checks if player hits the side of the box
-        const collidesVertically = mainPlayer.position.y + mainPlayer.height - 10 > box.position.y && mainPlayer.position.y < box.position.y + box.height // Checks if player hits the top side of the box
+    turtles.forEach((turtle) => {
+        const collidesHorizontally = mainPlayer.position.x + mainPlayer.width - 25 > turtle.position.x && mainPlayer.position.x + 25 < turtle.position.x + turtle.width // Checks if player hits the side of the box
+        const collidesVertically = mainPlayer.position.y + mainPlayer.height - 10 > turtle.position.y && mainPlayer.position.y < turtle.position.y + turtle.height // Checks if player hits the top side of the box
 
-        if (collidesHorizontally && collidesVertically && box.hit === false) { // If player is hit by box, player is dead
-            box.hit = true
+        if (collidesHorizontally && collidesVertically && turtle.hit === false) { // If player is hit by box, player is dead
+            turtle.hit = true
             mainPlayer.isAlive = false
             mainPlayer.velocity.y = 0
             mainPlayer.isGrounded = true
-        } else if (!collidesHorizontally && mainPlayer.position.x > box.position.x && box.hit === false) { // Player successfully passed the box without collision
-            box.hit = true
+        } else if (!collidesHorizontally && mainPlayer.position.x > turtle.position.x && turtle.hit === false) { // Player successfully passed the box without collision
+            turtle.hit = true
             mainPlayer.boxJumped++
-            chicken.chickenSpawn++
+            chicken.spawn++
+            bird.spawn++
         }
     });
 }
@@ -100,6 +107,7 @@ function playerCollectFruit(mainPlayer, fruitImg) {
         if (collidesHorizontally && collidesVertically && fruit.gotFruit === false) {
             fruit.gotFruit = true
             mainPlayer.score++
+            collectSoundEffect.play()
         }
     })
 }
@@ -176,13 +184,39 @@ function playerImage(mainPlayer) { // creates image and handles the animation of
             ctx.drawImage(mainPlayer.img, mainPlayer.position.x, mainPlayer.position.y, mainPlayer.width, mainPlayer.height)
         }
     } else { // Hit animation
-        mainPlayer.img.src = mainPlayer.playerHit
-        mainPlayer.animationTime += deltaTime30FPS
+        if (mainPlayer.isHit === false) {
+            mainPlayer.img.src = mainPlayer.playerHit
+            mainPlayer.animationTime += deltaTime60FPS
 
-        playerAnimation(mainPlayer, 32, 32, 500)
+            playerAnimation(mainPlayer, 32, 32, 500)
 
-        if (mainPlayer.frames > 13) {
-            mainPlayer.frames = 13
+            if (mainPlayer.frames > 13) {
+                mainPlayer.frames = 13
+            }
+            setTimeout(() => {
+                mainPlayer.isHit = true
+            }, 500)
+            deathSoundEffect.play()
+            gameMusic.pause()
+        } else {
+            if (mainPlayer.isGhost === false) {
+                mainPlayer.img.src = mainPlayer.playerDeath
+                mainPlayer.animationTime += deltaTime60FPS
+
+                playerAnimation(mainPlayer, 96, 96, 400)
+
+                if (mainPlayer.frames > 6) {
+                    mainPlayer.frames = 0
+                }
+                setTimeout(() => {
+                    mainPlayer.isGhost = true
+                }, 800)
+            } else {
+                mainPlayer.position.y -= 0.5
+                let img = new Image()
+                img.src = 'assets/images/player/FMan-Ghost.png'
+                ctx.drawImage(img, mainPlayer.position.x, mainPlayer.position.y, mainPlayer.width, mainPlayer.height)
+            }
         }
     }
 }
@@ -202,6 +236,7 @@ function createPlayer(newPlayer) { //one function to pass for player
     playerCollectFruit(newPlayer, bananas)
     playerCollectFruit(newPlayer, strawberrys)
     obstacleHit(newPlayer, chicken)
+    obstacleHit(newPlayer, bird)
 }
 
 

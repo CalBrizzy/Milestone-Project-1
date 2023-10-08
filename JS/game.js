@@ -4,11 +4,12 @@ const ctx = canvas.getContext('2d')
 canvas.height = 800
 canvas.width = 1600
 
-let lastFrameTime = 0
-const frameDuration = 30
-
 let gameSpeed = 0
 let gameStart = false
+const gameMusic = new Audio ('assets/music/game-music.wav')
+const collectSoundEffect = new Audio ('assets/music/collect-sound-effect.wav')
+const jumpSoundEffect = new Audio ('assets/music/jump-sound-effect.wav')
+const deathSoundEffect = new Audio ('assets/music/death-sound-effect.wav')
 
 let gameTitle = document.getElementById('game-start')
 let gameInputStartMsg = document.getElementById('start-btn')
@@ -26,6 +27,10 @@ document.addEventListener('keydown', function (event) { // press enter to start 
             gameTitle.style.display = 'none'
             gameInputStartMsg.style.display = 'none'
             gameDirectionMsg.style.display = 'none'
+            gameMusic.play()
+            gameMusic.loop = true
+            gameMusic.currentTime = 0
+            gameMusic.volume = 0.2
             gameSpeed = 1
         }
     }
@@ -41,6 +46,8 @@ document.addEventListener('keydown', function (event) { // game over press enter
             gameDirectionMsg.style.display = ''
             gameStart = false
             player1.isAlive = true
+            player1.isHit = false
+            player1.isGhost = false
             boxes.hit = false
             chicken.chickenSpawn = 0
             gameRestart()
@@ -50,7 +57,7 @@ document.addEventListener('keydown', function (event) { // game over press enter
 
 function gameRestart() {
     playerStartingPos(player1)
-    obstacleStartingPos(boxes)
+    obstacleStartingPos(turtles)
     fruitsStartingPos(apples)
     player1.boxJumped = 0
 }
@@ -67,7 +74,7 @@ function update() {
     createBackground()
     createPlayer(player1)
     createGround(grounds)
-    createObstacle(boxes)
+    createObstacle()
     createFruits()
     gameOver()
 }
