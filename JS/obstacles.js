@@ -26,7 +26,7 @@ let boxes = [new Obstacle(2000, 655), new Obstacle(4000, 655)]
 let turtles = [new Obstacle(2000, 655), new Obstacle(4000, 655)]
 let chicken = new Obstacle(2500, 655)
 let bigBird = new Obstacle(2500, 550)
-let bird = new Obstacle(2000, 550)
+let bird = new Obstacle(2400, 550)
 
 
 function obsSpawn(obsImg, src, spawnCount, speed, framesLength, resetFrames, framesWidth, framesHeight) {
@@ -125,7 +125,7 @@ function obstacleStartingPos(obsImg) {
     obsImg[1].position.y = 655
 
     chicken.position.x = 2500
-    bird.position.x = 2000
+    bird.position.x = 2400
     chicken.spawn = 0
 
     obsImg.forEach((obs) => {

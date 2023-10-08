@@ -19,10 +19,10 @@ const bananaImg = 'assets/images/fruits/Bananas.png'
 const strawberryImg = 'assets/images/fruits/Strawberry.png'
 
 let apples = [new Fruit(2000, 500), new Fruit(3000, 500), new Fruit(4000, 500)]
-let bananas = [new Fruit(-10, 0), new Fruit(-10, 0)]
-let strawberrys = [new Fruit(-10, 0), new Fruit(-10, 0)]
+let bananas = [new Fruit(-50, 0), new Fruit(-50, 0), new Fruit(-50, 0)]
+let strawberrys = [new Fruit(-50, 0), new Fruit(-50, 0), new Fruit(-50, 0)]
 
-const newLocation1 = [3000, 4800, 5800]
+const newLocation1 = [3000, 3800, 4600, 5400, 6200, 7000]
 const newLocation2 = [400, 450, 500, 550, 600, 650, 700]
 
 function fruitsAsset(fruitImg, src) {

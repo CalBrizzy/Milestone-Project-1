@@ -50,6 +50,8 @@ document.addEventListener('keydown', function (event) { // game over press enter
             player1.isGhost = false
             boxes.hit = false
             chicken.chickenSpawn = 0
+            deathSoundEffect.pause()
+            deathSoundEffect.currentTime = 0
             gameRestart()
         }
     }
